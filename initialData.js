@@ -140,13 +140,26 @@ document
   .addEventListener("click", closeModal);
 
 function saveTask() {
-  const task = tasks.find((t) => t.id === currentTaskId);
+  if (currentTaskId) {
+    // EDIT EXISTING TASK
+    const task = tasks.find((t) => t.id === currentTaskId);
 
-  task.title = titleInput.value;
-  task.description = descInput.value;
-  task.status = statusInput.value;
+    task.title = titleInput.value;
+    task.description = descInput.value;
+    task.status = statusInput.value;
+  } else {
+    // CREATE NEW TASK
+    const newTask = {
+      id: Date.now(), // unique ID
+      title: titleInput.value,
+      description: descInput.value,
+      status: statusInput.value,
+    };
 
-  saveTasksToStorage(); // ⭐ ADD THIS
+    tasks.push(newTask);
+  }
+
+  saveTasksToStorage(); // ⭐ important
 
   renderTasks();
   closeModal();
