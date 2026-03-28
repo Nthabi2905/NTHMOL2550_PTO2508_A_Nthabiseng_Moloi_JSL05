@@ -133,6 +133,10 @@ function openTaskModal(task) {
 function closeModal() {
   modal.classList.add("hidden");
   modal.classList.remove("flex");
+
+  titleInput.value = "";
+  descInput.value = "";
+  statusInput.value = "todo";
 }
 
 document
