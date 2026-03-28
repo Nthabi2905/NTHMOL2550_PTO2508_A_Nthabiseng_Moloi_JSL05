@@ -60,7 +60,7 @@ const initialTasks = [
   },
 ];
 
-let tasks = [...initialTasks];
+let tasks = [];
 
 const todoColumn = document.getElementById("todo-column");
 const doingColumn = document.getElementById("doing-column");
