@@ -126,6 +126,9 @@ function openTaskModal(task) {
   descInput.value = task.description;
   statusInput.value = task.status;
 
+  modalTitle.textContent = "Edit Task";
+  saveBtn.textContent = "Save Changes";
+
   modal.classList.remove("hidden");
   modal.classList.add("flex");
 }
