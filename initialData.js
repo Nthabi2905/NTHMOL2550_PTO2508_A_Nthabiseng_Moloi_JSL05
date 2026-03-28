@@ -1,3 +1,26 @@
+const STORAGE_KEY = "kanban_tasks";
+
+/**
+ * Save tasks to localStorage
+ */
+function saveTasksToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+/**
+ * Load tasks from localStorage
+ */
+function loadTasksFromStorage() {
+  const storedTasks = localStorage.getItem(STORAGE_KEY);
+
+  if (storedTasks) {
+    tasks = JSON.parse(storedTasks);
+  } else {
+    tasks = [...initialTasks];
+    saveTasksToStorage();
+  }
+}
+
 const initialTasks = [
   {
     id: 1,
