@@ -152,6 +152,17 @@ function saveTask() {
   closeModal();
 }
 
+document.getElementById("add-task-btn").addEventListener("click", () => {
+  currentTaskId = null;
+
+  titleInput.value = "";
+  descInput.value = "";
+  statusInput.value = "todo";
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+});
+
 document.getElementById("save-task-btn").addEventListener("click", saveTask);
 
 renderTasks();
