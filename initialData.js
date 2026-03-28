@@ -146,9 +146,9 @@ function saveTask() {
   task.description = descInput.value;
   task.status = statusInput.value;
 
-  loadTasksFromStorage();
-  renderTasks();
+  saveTasksToStorage(); // ⭐ ADD THIS
 
+  renderTasks();
   closeModal();
 }
 
