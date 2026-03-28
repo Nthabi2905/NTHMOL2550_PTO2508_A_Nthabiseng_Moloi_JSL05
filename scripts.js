@@ -165,6 +165,7 @@ function saveTask() {
 
   saveTasksToStorage(); // ⭐ important
 
+  loadTasksFromStorage();
   renderTasks();
   closeModal();
 }
