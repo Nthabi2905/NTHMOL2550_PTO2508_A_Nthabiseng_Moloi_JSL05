@@ -139,9 +139,19 @@ function closeModal() {
   statusInput.value = "todo";
 }
 
-document
-  .getElementById("close-modal-btn")
-  .addEventListener("click", closeModal);
+document.getElementById("add-task-btn").addEventListener("click", () => {
+  currentTaskId = null;
+
+  titleInput.value = "";
+  descInput.value = "";
+  statusInput.value = "todo";
+
+  modalTitle.textContent = "Add New Task";
+  saveBtn.textContent = "Create Task";
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+});
 
 function saveTask() {
   if (currentTaskId) {
@@ -184,3 +194,6 @@ document.getElementById("add-task-btn").addEventListener("click", () => {
 document.getElementById("save-task-btn").addEventListener("click", saveTask);
 
 renderTasks();
+
+const modalTitle = document.getElementById("modal-title");
+const saveBtn = document.getElementById("save-task-btn");
