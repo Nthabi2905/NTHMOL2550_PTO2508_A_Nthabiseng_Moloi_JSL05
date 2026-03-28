@@ -157,17 +157,20 @@ document.getElementById("add-task-btn").addEventListener("click", () => {
 });
 
 function saveTask() {
+  if (!titleInput.value || !descInput.value) {
+    alert("Please fill out all fields");
+    return;
+  }
+
   if (currentTaskId) {
-    // EDIT EXISTING TASK
     const task = tasks.find((t) => t.id === currentTaskId);
 
     task.title = titleInput.value;
     task.description = descInput.value;
     task.status = statusInput.value;
   } else {
-    // CREATE NEW TASK
     const newTask = {
-      id: Date.now(), // unique ID
+      id: Date.now(),
       title: titleInput.value,
       description: descInput.value,
       status: statusInput.value,
@@ -176,12 +179,16 @@ function saveTask() {
     tasks.push(newTask);
   }
 
-  saveTasksToStorage(); // ⭐ important
-
-  loadTasksFromStorage();
+  saveTasksToStorage();
   renderTasks();
   closeModal();
 }
+
+saveTasksToStorage(); // ⭐ important
+
+loadTasksFromStorage();
+renderTasks();
+closeModal();
 
 document.getElementById("add-task-btn").addEventListener("click", () => {
   currentTaskId = null;
