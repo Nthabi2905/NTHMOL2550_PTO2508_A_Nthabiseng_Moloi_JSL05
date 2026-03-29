@@ -23,10 +23,9 @@ This app allows users to create, edit, and manage tasks across different stages 
 
 ## 🛠️ Technologies Used
 
-- HTML5
 - Tailwind CSS
 - JavaScript (Vanilla JS)
-- Local Storage API
+- Local Storage
 
 ---
 
@@ -107,14 +106,5 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || initialTasks;
 ## 👩🏽‍💻 Author
 
 **Nthabiseng Moloi**
-
-- Passionate about STEM education, coding, and digital innovation
-- Building solutions that improve learning and accessibility
-
----
-
-## 📄 License
-
-This project is open-source and available for learning and personal use.
 
 ---
