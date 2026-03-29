@@ -1,26 +1,3 @@
-const STORAGE_KEY = "kanban_tasks";
-
-/**
- * Save tasks to localStorage
- */
-function saveTasksToStorage() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-}
-
-/**
- * Load tasks from localStorage
- */
-function loadTasksFromStorage() {
-  const storedTasks = localStorage.getItem(STORAGE_KEY);
-
-  if (storedTasks) {
-    tasks = JSON.parse(storedTasks);
-  } else {
-    tasks = [...initialTasks];
-    saveTasksToStorage();
-  }
-}
-
 const initialTasks = [
   {
     id: 1,
@@ -60,7 +37,7 @@ const initialTasks = [
   },
 ];
 
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [...initialTasks];
 
 const todoColumn = document.getElementById("todo-column");
 const doingColumn = document.getElementById("doing-column");
@@ -78,7 +55,7 @@ function createTaskCard(task) {
   const card = document.createElement("div");
 
   card.className =
-    "bg-card p-6 rounded-xl shadow cursor-pointer hover:shadow-lg transition-shadow";
+    "bg-white p-6 rounded-xl shadow cursor-pointer hover:shadow-lg transition-shadow";
 
   card.innerHTML = `<h3 class="font-bold text-lg">${task.title}</h3>`;
 
@@ -119,15 +96,20 @@ function updateTaskCounts() {
   ).length;
 }
 
-function openTaskModal(task) {
-  currentTaskId = task.id;
-
-  titleInput.value = task.title;
-  descInput.value = task.description;
-  statusInput.value = task.status;
-
-  modalTitle.textContent = "Edit Task";
-  saveBtn.textContent = "Save Changes";
+function openTaskModal(task = null) {
+  if (task) {
+    // ✏️ EDIT MODE
+    currentTaskId = task.id;
+    titleInput.value = task.title;
+    descInput.value = task.description;
+    statusInput.value = task.status;
+  } else {
+    // ➕ CREATE MODE
+    currentTaskId = null;
+    titleInput.value = "";
+    descInput.value = "";
+    statusInput.value = "todo";
+  }
 
   modal.classList.remove("hidden");
   modal.classList.add("flex");
@@ -136,39 +118,28 @@ function openTaskModal(task) {
 function closeModal() {
   modal.classList.add("hidden");
   modal.classList.remove("flex");
-
-  titleInput.value = "";
-  descInput.value = "";
-  statusInput.value = "todo";
 }
 
+document
+  .getElementById("close-modal-btn")
+  .addEventListener("click", closeModal);
+
 document.getElementById("add-task-btn").addEventListener("click", () => {
-  currentTaskId = null;
-
-  titleInput.value = "";
-  descInput.value = "";
-  statusInput.value = "todo";
-
-  modalTitle.textContent = "Add New Task";
-  saveBtn.textContent = "Create Task";
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
+  openTaskModal(); // no task = create mode
 });
 
 function saveTask() {
-  if (!titleInput.value || !descInput.value) {
-    alert("Please fill out all fields");
-    return;
-  }
+  if (!titleInput.value.trim()) return;
 
   if (currentTaskId) {
+    // ✏️ EDIT
     const task = tasks.find((t) => t.id === currentTaskId);
 
     task.title = titleInput.value;
     task.description = descInput.value;
     task.status = statusInput.value;
   } else {
+    // ➕ CREATE NEW TASK
     const newTask = {
       id: Date.now(),
       title: titleInput.value,
@@ -179,31 +150,14 @@ function saveTask() {
     tasks.push(newTask);
   }
 
-  saveTasksToStorage();
   renderTasks();
   closeModal();
 }
-
-saveTasksToStorage(); // ⭐ important
-
-loadTasksFromStorage();
-renderTasks();
-closeModal();
-
-document.getElementById("add-task-btn").addEventListener("click", () => {
-  currentTaskId = null;
-
-  titleInput.value = "";
-  descInput.value = "";
-  statusInput.value = "todo";
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-});
 
 document.getElementById("save-task-btn").addEventListener("click", saveTask);
 
 renderTasks();
 
-const modalTitle = document.getElementById("modal-title");
-const saveBtn = document.getElementById("save-task-btn");
+function saveToLocalStorage() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
