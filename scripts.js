@@ -39,6 +39,10 @@ const initialTasks = [
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [...initialTasks];
 
+function saveToLocalStorage() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 const todoColumn = document.getElementById("todo-column");
 const doingColumn = document.getElementById("doing-column");
 const doneColumn = document.getElementById("done-column");
@@ -98,7 +102,7 @@ function updateTaskCounts() {
 
 function openTaskModal(task = null) {
   if (task) {
-    // ✏️ EDIT MODE
+    //  EDIT MODE
     currentTaskId = task.id;
     titleInput.value = task.title;
     descInput.value = task.description;
@@ -132,14 +136,12 @@ function saveTask() {
   if (!titleInput.value.trim()) return;
 
   if (currentTaskId) {
-    // ✏️ EDIT
     const task = tasks.find((t) => t.id === currentTaskId);
 
     task.title = titleInput.value;
     task.description = descInput.value;
     task.status = statusInput.value;
   } else {
-    // ➕ CREATE NEW TASK
     const newTask = {
       id: Date.now(),
       title: titleInput.value,
@@ -150,6 +152,7 @@ function saveTask() {
     tasks.push(newTask);
   }
 
+  saveToLocalStorage(); // ADD THIS
   renderTasks();
   closeModal();
 }
